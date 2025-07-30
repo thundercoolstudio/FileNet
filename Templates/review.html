@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件审核 - {{ site_name }}的网盘</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='image/title.jpg') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='image/title.jpg') }}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href={{ url_for('static', filename='css/style.css') }}>
+</head>
+<body>
+    <header class="download-header">
+        <div class="header-content">
+            <div class="avatar-container small">
+                <img src={{ url_for('static', filename='image/title.jpg') }} alt="网站头像" class="avatar">
+            </div>
+            <h1 class="name">{{ site_name }} - 文件审核</h1>
+            <nav class="nav">
+                <ul>
+                    <li><a href="{{ url_for('dashboard') }}" class="back-btn"><i class="fas fa-arrow-left"></i> 返回仪表盘</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="file-list">
+            <h2>待审核文件</h2>
+            {% if files %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>文件名</th>
+                        <th>大小</th>
+                        <th>上传时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for file in files %}
+                    <tr>
+                        <td>{{ file.name }}</td>
+                        <td>{{ (file.size / 1024)|round(2) }} KB</td>
+                        <td>{{ file.modified|datetimeformat }}</td>
+                        <td>
+                            <button class="btn-icon approve-btn" data-file="{{ file.path }}">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            <button class="btn-icon reject-btn" data-file="{{ file.path }}">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="empty-message">暂无待审核文件</p>
+            {% endif %}
+        </div>
+    </main>
+</body>
+</html>

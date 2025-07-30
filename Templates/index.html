@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ site_name }}的网盘</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='image/title.jpg') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='image/title.jpg') }}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href={{ url_for('static', filename='css/style.css') }}>
+    <script src={{ url_for('static', filename='js/theme.js') }} defer></script>
+    <div class="theme-switcher-fixed">
+        <button id="theme-toggle-fixed" aria-label="切换主题">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+</head>
+<body>
+    <header class="download-header">
+        <button class="menu-toggle" aria-label="菜单">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="header-content">
+            <div class="avatar-container small">
+                <img src={{ url_for('static', filename='image/title.jpg') }} alt="网站头像" class="avatar">
+            </div>
+            <h1 class="name">{{ site_name }}的网盘</h1>
+            <nav class="nav">
+                <ul>
+                    {% if current_user.is_authenticated %}
+                        <li><a href="{{ url_for('dashboard') }}"><i class="fas fa-tachometer-alt"></i> 仪表盘</a></li>
+                        <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> 退出</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt"></i> 登录</a></li>
+                        <li><a href="{{ url_for('register') }}"><i class="fas fa-user-plus"></i> 注册</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="search-bar">
+            <form action="{{ url_for('search') }}" method="GET" style="text-align: center;margin-top: 20px;">
+                <div class="search">
+                    <input type="text" name="search" placeholder="搜索文件...">
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </div>
+            </form>
+        </div>
+
+        <div class="file-actions" style="text-align: center;margin-top: 20px;">
+            <a href="{{ url_for('upload') }}" class="project-link btn-primary"><i class="fas fa-upload"></i> 上传文件</a>
+        </div>
+
+        <div class="file-list">
+            <h2>文件列表</h2>
+            <table class="file-table">
+                <thead>
+                    <tr>
+                        <th>文件名</th>
+                        <th>大小</th>
+                        <th>类型</th>
+                        <th>修改日期</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if files %}
+                        {% for file in files %}
+                        <tr>
+                            <td>{{ file.name }}</td>
+                            <td>{{ (file.size / 1024)|round(2) }} KB</td>
+                            <td>{{ file.type }}</td>
+                            <td>{{ file.modified|datetimeformat }}</td>
+                            <td>
+                                <a href="{{ url_for('download_file', filename=file.path) }}" 
+                                   class="btn-download">
+                                    <i class="fas fa-download"></i>下载
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="empty-message">暂无文件</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+        {% if current_user.is_authenticated %}
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="?page={{ page-1 }}" class="project-link page-link">上一页</a>
+            {% endif %}
+            <span class="current-page download-btn">第 {{ page }} 页</span>
+            {% if files|length == config['FILE_PAGE'] %}
+                <a href="?page={{ page+1 }}" class="project-link page-link">下一页</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2025 {{ site_name }}的网盘 - 保留所有权利</p>
+            <div class="footer-social">
+                <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="mailto:youremail@email.com"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

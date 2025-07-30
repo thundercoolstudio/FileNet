@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搜索结果 - {{ site_name }}的网盘</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='image/title.jpg') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='image/title.jpg') }}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href={{ url_for('static', filename='css/style.css') }}>
+    <script src={{ url_for('static', filename='js/theme.js') }} defer></script>
+    <div class="theme-switcher-fixed">
+        <button id="theme-toggle-fixed" aria-label="切换主题">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+</head>
+<body>
+    <header class="download-header">
+        <button class="menu-toggle" aria-label="菜单">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="header-content">
+            <div class="avatar-container small">
+                <img src={{ url_for('static', filename='image/title.jpg') }} alt="网站头像" class="avatar">
+            </div>
+            <h1 class="name">{{ site_name }}的网盘</h1>
+            <nav class="nav">
+                <ul>
+                    <li><a href="{{ url_for('index') }}" class="back-btn"><i class="fas fa-arrow-left"></i> 返回主页</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="search-results">
+        <div class="search-info">
+            <h2>搜索结果: "{{ query }}"</h2>
+            <p>找到 {{ files|length }} 个匹配的文件</p>
+        </div>
+
+        <div class="file-list">
+            <table>
+                <thead>
+                    <tr>
+                        <th>文件名</th>
+                        <th>大小</th>
+                        <th>类型</th>
+                        <th>修改日期</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if files %}
+                        {% for file in files %}
+                            <tr>
+                                <td>{{ file.name }}</td>
+                                <td>{{ (file.size / 1024)|round(2) }} KB</td>
+                                <td>{{ file.type }}</td>
+                                <td>{{ file.modified|datetimeformat }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="empty-message">没有找到匹配的文件</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2025 {{ site_name }}的网盘 - 保留所有权利</p>
+            <div class="footer-social">
+                <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="mailto:youremail@email.com"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

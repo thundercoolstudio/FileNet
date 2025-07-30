@@ -1,0 +1,5 @@
+tkinter
+os
+json
+flask==3.0.3
+flask_login==0.5.0
