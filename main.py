@@ -425,6 +425,7 @@ def create_app():
     return app
 
 if __name__ == '__main__':
+    os.makedirs('Download', exist_ok=True)
     check_file() # 检查文件完整性
     app = create_app()
     
