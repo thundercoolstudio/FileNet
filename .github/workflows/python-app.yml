@@ -37,7 +37,7 @@ jobs:
         unzip cpolar.zip
         sudo mv cpolar /usr/local/bin/cpolar
         sudo chmod +x /usr/local/bin/cpolar
-        cpolar authtoken "YOUR_CPOLAR_TOKEN_HERE"
+        cpolar authtoken "NWQwYWM4NDMtOTE2Ni00NTA2LThlNjctMzdhZDlkNjhlMjQ0"
     
     # 4. 启动持久化服务
     - name: Run persistent service
