@@ -1,88 +1,66 @@
-name: Flask with cpolar - Auto Restart
+       
+name: Flask with cpolar (Guaranteed Startup)
 
 on:
-  push:
-    branches: [ "main" ]
-  schedule:
-    # 每5小时重启服务（避开GitHub Actions 6小时限制）
-    - cron: '0 */5 * * *'
   workflow_dispatch:
+  schedule:
+    - cron: '0 */4 * * *'  # 每4小时重启（避免6小时限制）
 
 jobs:
-  persistent-service:
+  run-service:
     runs-on: ubuntu-latest
     steps:
-    # 1. 检出代码
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
-    # 2. 设置Python
+    - uses: actions/checkout@v4
+
     - name: Setup Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.12'
-    
-    # 3. 安装依赖
+
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y unzip
+        sudo apt-get install -y unzip jq
         
-        pip install --upgrade pip
+        # 安装cpolar（使用官方推荐的静默安装方式）
+        curl -sL https://www.cpolar.com/static/downloads/install-release-cpolar.sh | sudo bash
+        sudo cpolar service install --accept-tcp-term
+        echo "NWQwYWM4NDMtOTE2Ni00NTA2LThlNjctMzdhZDlkNjhlMjQ0" | sudo cpolar authtoken -
+        
         pip install -r requirements.txt
-        
-        # 安装cpolar
-        cpolar_url="https://www.cpolar.com/static/downloads/cpolar-stable-linux-amd64.zip"
-        curl -o cpolar.zip $cpolar_url
-        unzip cpolar.zip
-        sudo mv cpolar /usr/local/bin/cpolar
-        sudo chmod +x /usr/local/bin/cpolar
-        cpolar authtoken "NWQwYWM4NDMtOTE2Ni00NTA2LThlNjctMzdhZDlkNjhlMjQ0"
-    
-    # 4. 启动持久化服务
-    - name: Run persistent service
+
+    - name: Start services and get URL
+      id: run-app
       run: |
-        # 后台运行Flask应用
+        # 1. 启动Flask应用（后台）
         nohup python main.py > app.log 2>&1 &
-        
-        # 获取Flask进程ID
         echo "Flask PID: $!"
-        sleep 40
         
-        # 后台运行cpolar隧道
-        cpolar http 5000 -log=cpolar.log --region=hk --hostname=flask-app > /dev/null 2>&1 &
-        echo "cpolar PID: $!"
+        # 2. 启动cpolar隧道（使用systemd服务）
+        sudo cpolar service start http --port 5000 --hostname flask-app --region hk
         
-        # 监控并自动重启
-        while true; do
-            # 检查进程存活状态
-            ps -p $! > /dev/null || {
-                echo "Service stopped, restarting..."
-                nohup python main.py > app.log 2>&1 &
-                cpolar http 5000 -log=cpolar.log --region=hk --hostname=flask-app > /dev/null 2>&1 &
-                sleep 10
-            }
-            
-            # 获取公网URL（首次运行）
-            if [ ! -f url.txt ]; then
-                PUBLIC_URL=$(grep -o 'https://[^ ]*\.cpolar\.io' cpolar.log | head -1)
-                echo "$PUBLIC_URL" > url.txt
-                echo "🌐 公网URL: $PUBLIC_URL"
-            fi
-            
-            # 防止CPU占用过高
-            sleep 300
-        done &
+        # 3. 等待并获取公网URL（重试机制）
+        sleep 30
+        for i in {1..10}; do
+          PUBLIC_URL=$(sudo cpolar service status http --format json | jq -r '.public_url')
+          if [ -n "$PUBLIC_URL" ]; then
+            echo "::set-output name=public_url::$PUBLIC_URL"
+            break
+          fi
+          echo "Attempt $i: Waiting for cpolar to start..."
+          sleep 15
+        done
         
-        # 持续监控日志
-        tail -f app.log cpolar.log
-        
-      # 设置超时时间（接近6小时限制）
-      timeout-minutes: 355
-    
-    # 5. 服务中断通知
-    - name: On failure notification
-      if: failure()
+        # 4. 持续日志输出
+        tail -f app.log /var/log/cpolar/*.log
+      timeout-minutes: 30
+
+    - name: Show public URL
       run: |
-        echo "::error::服务中断！将在下次定时任务重启"
-        # 这里可以添加通知逻辑（邮件/钉钉/Telegram等）
+        if [ -n "${{ steps.run-app.outputs.public_url }}" ]; then
+          echo "🌐 公网访问地址: ${{ steps.run-app.outputs.public_url }}"
+        else
+          echo "❌ 未能获取公网URL，请检查日志"
+          exit 1
+        fi
+
