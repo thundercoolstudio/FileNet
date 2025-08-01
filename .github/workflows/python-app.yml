@@ -47,7 +47,7 @@ jobs:
         
         # 获取Flask进程ID
         echo "Flask PID: $!"
-        sleep 5
+        sleep 40
         
         # 后台运行cpolar隧道
         cpolar http 5000 -log=cpolar.log --region=hk --hostname=flask-app > /dev/null 2>&1 &
