@@ -1,3 +1,5 @@
+[![Python application](https://github.com/thundercoolstudio/FileNet/actions/workflows/python-app.yml/badge.svg)](https://github.com/thundercoolstudio/FileNet/actions/workflows/python-app.yml)
+
 **[[ 中 文 (简 体) ]](#简介) | [[ E n g l i s h ]](#简介)**
 
 # 简介
