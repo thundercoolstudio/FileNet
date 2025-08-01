@@ -20,7 +20,7 @@
 ~$ git clone https://github.com/BuelieR/FileNet.git #克隆项目
 ~$ pip install -r requirements.txt #安装依赖
 ~$ python main.py
-~$ cpolar http 5000 #配置开放端口(内网穿透，可选)
+~$ cpolar http 5000 #配置开放端口(内网穿透，可选，注意不要泄露您的token)
 ```
 
 ### Linux
