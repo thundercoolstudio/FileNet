@@ -36,7 +36,7 @@
 - **`LANGUAGE` : 配置网站多语言支持，存储格式为一个列表，`List[0]`是默认语言，存储的信息类型为`str`,`List[1]`配置是否启用多语言支持，存储类型为`bool`,下面是一个存储例子:**
 ```json
 {
-    "LANGUAGE":["zh_CN",<bool>],
+    "LANGUAGE":["zh_CN",true],
     ...
 }
 ```
@@ -82,7 +82,7 @@
 ```json
 {
     ...
-    "DOWNLOAD":["<folder_path>",<bool>],
+    "DOWNLOAD":["<folder_path>",true],
     ...
 }
 ```
@@ -90,7 +90,7 @@
 ```json
 {
     ...
-    "UPLOAD":[<bool>,"<folder_path>",<max>,"<Bit/Bytes/KB/MB/GB/TB/PB>"],
+    "UPLOAD":[true,"<folder_path>",<max>,"<Bit/Bytes/KB/MB/GB/TB/PB>"],
     ...
 }
 ```
@@ -102,11 +102,11 @@
     ...
 }
 ```
-- **`SYS_CONF` : 部署应用的权限最高的可登录账户,存储方式为一个列表(表名`SYS_CONF`,存储内容`[<bool>,<name>,<password>,<uuid>]`,当第一次运行项目时会在网页提升是否配置,其中<bool>表示是否允许该账户在网页端登录,`<name>`是该账户的名称、`<uuid>`是该账户辨识uuid、`<password>`是该账户的密码哈希值,当`<bool>`为`Fasle`时,后几项为None),下面是一个存储例子:**
+- **`SYS_CONF` : 部署应用的权限最高的可登录账户,存储方式为一个列表(表名`SYS_CONF`,存储内容`[true,<name>,<password>,<uuid>]`,当第一次运行项目时会在网页提升是否配置,其中true表示是否允许该账户在网页端登录,`<name>`是该账户的名称、`<uuid>`是该账户辨识uuid、`<password>`是该账户的密码哈希值,当`true`为`Fasle`时,后几项为None),下面是一个存储例子:**
 ```json
 {
     ...
-    "SYS_CONF":[<bool>,"<name>","<password_hash>","<uuid"],
+    "SYS_CONF":[true,"<name>","<password_hash>","<uuid>"],
     ...
 }
 ```
@@ -119,7 +119,7 @@
             "<uuid>":"<uuid_value>",
             "<password>":"<hash_value>",
             "<signin_value>":"<md5_value>",
-            "<type>":<int_number>
+            "<type>":<int_number>"
         },
     },
     ...
@@ -129,7 +129,7 @@
 ```json
 {
     ...
-    "UUID_JNE":<bool>,
+    "UUID_JNE":true,
     ...
 }
 ```
