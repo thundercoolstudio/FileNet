@@ -281,7 +281,7 @@ def create_app():
     @app.route('/search')
     def search():
         """文件搜索"""
-        query = request.args.get('q', '').lower()
+        query = request.args.get('search', '').lower()
         config = app.config['CONFIG']
         download_dir = Path(config['DOWNLOAD'][0])
         
