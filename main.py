@@ -431,8 +431,8 @@ if __name__ == '__main__':
     app = create_app()
     
     # 检查模板文件是否存在
-    if not Path("Templates/index.html").exists():
-        raise FileNotFoundError("缺少模板文件 Templates/index.html")
+    if not Path("templates/index.html").exists():
+        raise FileNotFoundError("缺少模板文件 templates/index.html")
     
     app.run(host='0.0.0.0', port=5000, debug=True)
     

@@ -1,0 +1,92 @@
+{
+    "LANGUAGE": [
+        "zh_CN",
+        true
+    ],
+    "SITE_NAME": "雷酷工作室",
+    "LICENSE": "Settings/LICENSE.txt",
+    "FILE_TYPE": {
+        "模型": [
+            ".obj",
+            ".fbx",
+            ".blend"
+        ],
+        "图片": [
+            ".jpg",
+            ".png",
+            ".gif"
+        ],
+        "音乐": [
+            ".mp3",
+            ".wav",
+            ".flac"
+        ],
+        "软件": [
+            ".exe",
+            ".deb",
+            ".dmg"
+        ],
+        "视频": [
+            ".mp4",
+            ".avi",
+            ".mov"
+        ],
+        "文档": [
+            ".txt",
+            ".docx",
+            ".xlsx"
+        ],
+        "PDF": [
+            ".pdf"
+        ],
+        "镜像": [
+            ".iso",
+            ".img",
+            ".vhd"
+        ],
+        "源代码文件": [
+            ".py",
+            ".java",
+            ".c",
+            "cpp",
+            ".cs",
+            "wd",
+            ".css",
+            ".rs",
+            ".js",
+            ".html"
+        ],
+        "Godot": [
+            ".tscn",
+            ".wd"
+        ],
+        "压缩包": [
+            ".zip",
+            ".7z",
+            ".tar",
+            ".gz",
+            ".rar",
+            ".jar",
+            ".tgz"
+        ]
+    },
+    "DOWNLOAD": [
+        "Download/",
+        true
+    ],
+    "UPLOAD": [
+        false,
+        "Upload/",
+        100,
+        "MB"
+    ],
+    "FILE_PAGE": 10,
+    "SYS_CONF": [
+        false,
+        null,
+        null,
+        null
+    ],
+    "USER": {},
+    "UUID_JNE": false
+}
