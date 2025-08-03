@@ -42,7 +42,7 @@
         </div>
 
         <div class="file-list">
-            <table>
+            <table  class="file-table">
                 <thead>
                     <tr>
                         <th>文件名</th>
@@ -59,6 +59,12 @@
                                 <td>{{ (file.size / 1024)|round(2) }} KB</td>
                                 <td>{{ file.type }}</td>
                                 <td>{{ file.modified|datetimeformat }}</td>
+                                <td>
+                                    <a href="{{ url_for('download_file', filename=file.path) }}" 
+                                        class="btn-download download-btn">
+                                        <i class="fas fa-download"></i>下载
+                                    </a>
+                                </td>
                             </tr>
                         {% endfor %}
                     {% else %}
@@ -69,6 +75,17 @@
                 </tbody>
             </table>
         </div>
+        {% if current_user.is_authenticated %}
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="?page={{ page-1 }}" class="project-link page-link">上一页</a>
+            {% endif %}
+            <span class="current-page download-btn">第 {{ page }} 页</span>
+            {% if files|length == config['FILE_PAGE'] %}
+                <a href="?page={{ page+1 }}" class="project-link page-link">下一页</a>
+            {% endif %}
+        </div>
+        {% endif %}
     </main>
 
     <footer class="footer">

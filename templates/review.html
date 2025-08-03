@@ -25,40 +25,44 @@
     </header>
 
     <main class="main-content">
-        <div class="file-list">
-            <h2>待审核文件</h2>
-            {% if files %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>文件名</th>
-                        <th>大小</th>
-                        <th>上传时间</th>
-                        <th>操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for file in files %}
-                    <tr>
-                        <td>{{ file.name }}</td>
-                        <td>{{ (file.size / 1024)|round(2) }} KB</td>
-                        <td>{{ file.modified|datetimeformat }}</td>
-                        <td>
-                            <button class="btn-icon approve-btn" data-file="{{ file.path }}">
-                                <i class="fas fa-check"></i>
-                            </button>
-                            <button class="btn-icon reject-btn" data-file="{{ file.path }}">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% else %}
-            <p class="empty-message">暂无待审核文件</p>
-            {% endif %}
-        </div>
+        <form method="POST" action="{{ url_for('review') }}">
+            <div class="file-list">
+                <h2>待审核文件</h2>
+                {% if files %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>文件名</th>
+                            <th>大小</th>
+                            <th>上传时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for file in files %}
+                        <tr>
+                            <td>{{ file.name }}</td>
+                            <td>{{ (file.size / 1024)|round(2) }} KB</td>
+                            <td>{{ file.modified|datetimeformat }}</td>
+                            <td>
+                                <button type="submit" name="action" value="approve" class="btn-icon" data-file="{{ file.path }}">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button type="submit" name="action" value="reject" class="btn-icon" data-file="{{ file.path }}">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                                <!-- 隐藏字段传递文件名 -->
+                                <input type="hidden" name="filename" value="{{ file.path }}">
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p class="empty-message">暂无待审核文件</p>
+                {% endif %}
+            </div>
+        </form>
     </main>
 </body>
 </html>

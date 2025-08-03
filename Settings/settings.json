@@ -24,7 +24,12 @@
         "软件": [
             ".exe",
             ".deb",
-            ".dmg"
+            ".dmg",
+            ".apk",
+            ".adb"
+        ],
+        "安装程序": [
+            ".msi"
         ],
         "视频": [
             ".mp4",
@@ -34,7 +39,8 @@
         "文档": [
             ".txt",
             ".docx",
-            ".xlsx"
+            ".xlsx",
+            ".md"
         ],
         "PDF": [
             ".pdf"
@@ -44,13 +50,19 @@
             ".img",
             ".vhd"
         ],
+        "脚本": [
+            ".vbs",
+            ".sh"
+        ],
+        "批处理文件": [
+            ".bat"
+        ],
         "源代码文件": [
             ".py",
             ".java",
             ".c",
             "cpp",
             ".cs",
-            "wd",
             ".css",
             ".rs",
             ".js",
@@ -58,6 +70,7 @@
         ],
         "Godot": [
             ".tscn",
+            ".gd",
             ".wd"
         ],
         "压缩包": [
@@ -87,6 +100,22 @@
         null,
         null
     ],
-    "USER": {},
+    "USER": {
+        "BuelieR": {
+            "uuid": "e23b4af7-2a07-4eb3-8703-49b889658fb0",
+            "password": "77241af44b2121accac9fe2b8f249f5e46275c50f81eefe0d5e73b34e6466468",
+            "signin_value": "bff9da9ab3ee3742d9039f1f49ea7d26",
+            "type": 0,
+            "created_at": "2025-08-02 21:01",
+            "username": "BuelieR"
+        },
+        "us_er0": {
+            "uuid": "231bfb8d-d236-4503-b5fa-da3b5331b520",
+            "password": "67d3dd79fc7837bc20d55e9039fbff5e85dffeb3d35258c4362813fd6aea99bb",
+            "signin_value": "d3635819facbc1c78e93c9e9f57eff99",
+            "type": 2,
+            "created_at": "2025-08-02 21:08"
+        }
+    },
     "UUID_JNE": false
 }

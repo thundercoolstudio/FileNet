@@ -21,15 +21,18 @@ def check_file():
                 "模型": [".obj", ".fbx", ".blend"],
                 "图片": [".jpg", ".png", ".gif"],
                 "音乐": [".mp3", ".wav", ".flac"],
-                "软件": [".exe", ".deb", ".dmg"],
+                "软件": [".exe", ".deb", ".dmg",".apk",".adb"],
+                "安装程序":[".msi"],
                 "视频": [".mp4", ".avi", ".mov"],
-                "文档": [".txt", ".docx", ".xlsx"],
+                "文档": [".txt", ".docx", ".xlsx",".md"],
                 "PDF": [".pdf"],
                 "镜像": [".iso", ".img", ".vhd"],
+                "脚本":[".vbs",".sh"],
+                "批处理文件":[".bat"],
                 "源代码文件": [".py",".java",".c","cpp",
-                            ".cs","wd",".css",".rs",
+                            ".cs",".css",".rs",
                             ".js", ".html"],
-                "Godot": [".tscn", ".wd"],
+                "Godot": [".tscn", ".gd",".wd"],
                 "压缩包": [".zip",".7z",".tar",".gz",".rar",".jar",".tgz"]
             },
             "DOWNLOAD": ["Download/", True],
@@ -281,7 +284,7 @@ def create_app():
     @app.route('/search')
     def search():
         """文件搜索"""
-        query = request.args.get('q', '').lower()
+        query = request.args.get('search', '').lower()
         config = app.config['CONFIG']
         download_dir = Path(config['DOWNLOAD'][0])
         
@@ -308,10 +311,21 @@ def create_app():
                         'modified': os.path.getmtime(file_path)
                     })
         
+        # 分页处理
+        page = request.args.get('page', 1, type=int)
+        per_page = config['FILE_PAGE']
+        if per_page <= 0:
+            per_page = len(matched_files)
+        
+        start = (page - 1) * per_page
+        end = start + per_page
+        paginated_files = matched_files[start:end]
+        
         return render_template('search_results.html', 
                              query=query,
                              files=matched_files,
-                             site_name=config['SITE_NAME'],)
+                             site_name=config['SITE_NAME'],
+                             page=page,)
 
     # 添加日期格式化过滤器
     @app.template_filter('datetimeformat')

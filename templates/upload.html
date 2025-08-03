@@ -36,33 +36,31 @@
     </header>
 
     <main class="upload-container">
-        <div class="upload-form">
-            <h2>上传文件</h2>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="flash-messages">
-                        {% for message in messages %}
-                            <div class="flash-message">{{ message }}</div>
-                        {% endfor %}
+        <section  id="contact" class="section">
+            <div class="auth-form">
+                <div class="contact-container">
+                    <div class="upload-form contact-form">
+                        <h2>上传文件</h2>
+                        {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                <div class="flash-messages">
+                                    {% for message in messages %}
+                                        <div class="flash-message">{{ message }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+                        <form method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="file">选择文件</label>
+                                <input type="file" id="file" name="file" class="submit-btn btn-primary" required>
+                            </div>
+                            <button type="submit" class="submit-btn btn-primary"><i class="fas fa-upload"></i> 上传</button>
+                        </form>
                     </div>
-                {% endif %}
-            {% endwith %}
-            <form method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="file">选择文件</label>
-                    <input type="file" id="file" name="file" required>
                 </div>
-                <div class="file-types">
-                    <h3>支持的文件类型:</h3>
-                    <ul>
-                        {% for category, exts in config['FILE_TYPE'].items() %}
-                            <li>{{ category }}: {{ exts|join(', ') }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <button type="submit" class="btn-primary"><i class="fas fa-upload"></i> 上传</button>
-            </form>
-        </div>
+            </div>
+        </section>
     </main>
 
     <footer class="footer">
