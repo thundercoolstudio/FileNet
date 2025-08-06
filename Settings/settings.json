@@ -113,8 +113,23 @@
             "uuid": "231bfb8d-d236-4503-b5fa-da3b5331b520",
             "password": "67d3dd79fc7837bc20d55e9039fbff5e85dffeb3d35258c4362813fd6aea99bb",
             "signin_value": "d3635819facbc1c78e93c9e9f57eff99",
-            "type": 2,
+            "type": 1,
             "created_at": "2025-08-02 21:08"
+        },
+        "白夜行者": {
+            "uuid": "da64a897-b63c-4bf6-b70c-83a7d41f1eac",
+            "password": "fd73b19f1e3c095edd5cc0b359f0751dcb1a40fe0014e1e196cd24f090448362",
+            "signin_value": "824518852340f7ed9e153d91a1ee451d",
+            "type": 0,
+            "created_at": "2025-08-03 16:29",
+            "username": "白夜行者"
+        },
+        "FSO": {
+            "uuid": "a4fae073-6f54-4e58-b1e7-1649f84aacdc",
+            "password": "91b24b58a5ffce16fb5f37a6effffde6d97c69102e5a50b622ca4bf1db516829",
+            "signin_value": "585033b96f3a533a814be04e16cd074c",
+            "type": 2,
+            "created_at": "2025-08-03 16:39"
         }
     },
     "UUID_JNE": false

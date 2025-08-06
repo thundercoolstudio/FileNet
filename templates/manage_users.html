@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!--调教用-->
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -9,6 +8,12 @@
     <link rel="icon" href="{{ url_for('static', filename='image/title.jpg') }}" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href={{ url_for('static', filename='css/style.css') }}>
+    <script src={{ url_for('static', filename='js/theme.js') }} defer></script>
+    <div class="theme-switcher-fixed">
+        <button id="theme-toggle-fixed" aria-label="切换主题">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
 </head>
 <body>
     <header class="download-header">
@@ -26,47 +31,100 @@
     </header>
 
     <main class="main-content">
-        <div class="user-list">
-            <h2>用户列表</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>用户名</th>
-                        <th>用户类型</th>
-                        <th>注册时间</th>
-                        <th>操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for username, user in users.items() %}
-                    <tr>
-                        <td>{{ username }}</td>
-                        <td>
-                            {% if user.type == 0 %}
-                            管理员
-                            {% elif user.type == 1 %}
-                            审核员
-                            {% else %}
-                            普通用户
-                            {% endif %}
-                        </td>
-                        <td>{{ user.get('created_at', '未知') }}</td>
-                        <td>
-                            <select class="user-role-select" data-user="{{ username }}">
-                                <option value="0" {% if user.type == 0 %}selected{% endif %}>管理员</option>
-                                <option value="1" {% if user.type == 1 %}selected{% endif %}>审核员</option>
-                                <option value="2" {% if user.type == 2 %}selected{% endif %}>普通用户</option>
-                                <option value="3">封禁账户</option>
-                            </select>
-                            <button class="btn-icon delete-btn" data-user="{{ username }}">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+        <section  id="contact" class="section">
+            <div class="auth-form">
+                <div class="contact-container">
+                    <div class="contact-form">
+                        <div class="user-list" style="text-align: center;">
+                            <h2>用户列表</h2>
+                            <form>
+                                <table class="file-table">
+                                    <thead>
+                                        <tr>
+                                            <th>用户名</th>
+                                            <th>用户类型</th>
+                                            <th>注册时间</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for username, user in users.items() %}
+                                        <tr>
+                                            <td>{{ username }}</td>
+                                            <td>
+                                                {% if user.type == 0 %}
+                                                管理员
+                                                {% elif user.type == 1 %}
+                                                审核员
+                                                {% else %}
+                                                普通用户
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ user.get('created_at', '未知') }}</td>
+                                            <td>
+                                                <select class="user-role-select submit-btn btn-primary" data-user="{{ username }}">
+                                                    <option value="0" {% if user.type == 0 %}selected{% endif %}>管理员</option>
+                                                    <option value="1" {% if user.type == 1 %}selected{% endif %}>审核员</option>
+                                                    <option value="2" {% if user.type == 2 %}selected{% endif %}>普通用户</option>
+                                                    <option value="3">封禁账户</option>
+                                                </select>
+                                                <button class="btn-icon delete-btn submit-btn btn-primary" data-user="{{ username }}">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2025 {{ site_name }}的网盘 - 保留所有权利</p>
+            <div class="footer-social">
+                <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="mailto:youremail@email.com"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+    </footer>
+    <script>
+    // 角色更新处理
+    document.querySelectorAll('.user-role-select').forEach(select => {
+        select.addEventListener('change', function() {
+            const formData = new FormData();
+            formData.append('action', 'update_role');
+            formData.append('username', this.dataset.user);
+            formData.append('role', this.value);
+            
+            fetch("{{ url_for('manage_users') }}", {
+                method: 'POST',
+                body: formData
+            }).then(() => location.reload());
+        });
+    });
+    
+    // 删除用户处理
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            if(confirm(`确定删除用户 ${this.dataset.user} 吗？`)) {
+                const formData = new FormData();
+                formData.append('action', 'delete_user');
+                formData.append('username', this.dataset.user);
+                
+                fetch("{{ url_for('manage_users') }}", {
+                    method: 'POST',
+                    body: formData
+                }).then(() => location.reload());
+            }
+        });
+    });
+    </script>
 </body>
 </html>

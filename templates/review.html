@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!--调教用-->
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -9,6 +8,12 @@
     <link rel="icon" href="{{ url_for('static', filename='image/title.jpg') }}" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href={{ url_for('static', filename='css/style.css') }}>
+    <script src={{ url_for('static', filename='js/theme.js') }} defer></script>
+    <div class="theme-switcher-fixed">
+        <button id="theme-toggle-fixed" aria-label="切换主题">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
 </head>
 <body>
     <header class="download-header">
@@ -26,44 +31,63 @@
     </header>
 
     <main class="main-content">
-        <form method="POST" action="{{ url_for('review') }}">
-            <div class="file-list">
-                <h2>待审核文件</h2>
-                {% if files %}
-                <table>
-                    <thead>
-                        <tr>
-                            <th>文件名</th>
-                            <th>大小</th>
-                            <th>上传时间</th>
-                            <th>操作</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for file in files %}
-                        <tr>
-                            <td>{{ file.name }}</td>
-                            <td>{{ (file.size / 1024)|round(2) }} KB</td>
-                            <td>{{ file.modified|datetimeformat }}</td>
-                            <td>
-                                <button type="submit" name="action" value="approve" class="btn-icon" data-file="{{ file.path }}">
-                                    <i class="fas fa-check"></i>
-                                </button>
-                                <button type="submit" name="action" value="reject" class="btn-icon" data-file="{{ file.path }}">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                                <!-- 隐藏字段传递文件名 -->
-                                <input type="hidden" name="filename" value="{{ file.path }}">
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                {% else %}
-                <p class="empty-message">暂无待审核文件</p>
-                {% endif %}
+        <section  id="contact" class="section">
+            <div class="auth-form">
+                <div class="contact-container">
+                    <div class="contact-form">
+                        <form method="POST" action="{{ url_for('review') }}">
+                            <div class="file-list">
+                                <h2>待审核文件</h2>
+                                {% if files %}
+                                <table class="file-table">
+                                    <thead>
+                                        <tr>
+                                            <th>文件名</th>
+                                            <th>大小</th>
+                                            <th>上传时间</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for file in files %}
+                                        <tr>
+                                            <td>{{ file.name }}</td>
+                                            <td>{{ (file.size / 1024)|round(2) }} KB</td>
+                                            <td>{{ file.modified|datetimeformat }}</td>
+                                            <td>
+                                                <button type="submit" name="action" value="approve" class="btn-icon submit-btn btn-primary" data-file="{{ file.path }}">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                                <button type="submit" name="action" value="reject" class="btn-icon submit-btn btn-primary" data-file="{{ file.path }}">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                                <!-- 隐藏字段传递文件名 -->
+                                                <input type="hidden" name="filename" value="{{ file.path }}">
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                {% else %}
+                                <p class="empty-message">暂无待审核文件</p>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-        </form>
+        </section>
     </main>
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2025 {{ site_name }}的网盘 - 保留所有权利</p>
+            <div class="footer-social">
+                <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="mailto:youremail@email.com"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
