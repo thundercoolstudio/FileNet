@@ -1042,3 +1042,63 @@ body {
     display: flex;
     align-items: center;
 }
+
+/* 汉堡图标动画 */
+.menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 30px;
+    height: 3px;
+    background: #333;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.menu-toggle.active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+/* 导航菜单动画 */
+.nav {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease, opacity 0.3s ease;
+    opacity: 0;
+}
+
+.nav.nav-active {
+    max-height: 500px; /* 根据实际内容调整 */
+    opacity: 1;
+}
+
+/* 响应式设计 - 桌面端显示菜单 */
+@media (min-width: 768px) {
+    .menu-toggle {
+        display: none;
+    }
+    .nav {
+        max-height: none;
+        opacity: 1;
+        overflow: visible;
+    }
+}

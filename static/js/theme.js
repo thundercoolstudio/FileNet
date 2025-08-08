@@ -32,6 +32,42 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav');
+    const hamburgerSpans = document.querySelectorAll('.menu-toggle span');
+    
+    menuToggle.addEventListener('click', function() {
+        // 切换导航菜单显示状态
+        navMenu.classList.toggle('nav-active');
+        
+        // 切换汉堡图标动画
+        this.classList.toggle('active');
+        
+        // 更新ARIA可访问性属性
+        const isExpanded = this.getAttribute('aria-expanded') === 'true';
+        this.setAttribute('aria-expanded', String(!isExpanded));
+    });
+    
+    // 点击菜单外部关闭菜单
+    document.addEventListener('click', function(e) {
+        if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+            navMenu.classList.remove('nav-active');
+            menuToggle.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', 'false');
+        }
+    });
+    
+    // ESC键关闭菜单
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && navMenu.classList.contains('nav-active')) {
+            navMenu.classList.remove('nav-active');
+            menuToggle.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', 'false');
+        }
+    });
+});
+
 function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     
@@ -90,12 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
             currentTheme = e.matches ? 'dark' : 'light';
             applyTheme(currentTheme);
         }
-    });
-
-    // 移动端菜单控制
-    menuToggle.addEventListener('click', () => {
-        menuToggle.classList.toggle('active');
-        nav.classList.toggle('active');
     });
 
     // 检查项目数量
