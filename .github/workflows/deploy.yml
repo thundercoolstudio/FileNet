@@ -2,7 +2,7 @@ name: Build MkDocs on gh-pages Branch
 
 on:
   push:
-    branches: [gh-pages]  # 仅在推送到gh-pages分支时触发
+    branches: ["gh-pages"]  # 仅在推送到gh-pages分支时触发
 
 jobs:
   build-and-deploy:
