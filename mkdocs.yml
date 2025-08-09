@@ -1,5 +1,17 @@
-site_name: FileNet Using Docs
+site_name: FileNet使用及开发文档
 nav:
     - 首页: index.md
     - 开发: development.md
-theme: readthedocs
+    
+theme: 
+    name: readthedocs
+    user_color_mode_toggle:True
+    hljs_languages:
+        - python
+         
+markdown_extensions:
+    - toc:
+        permalink: True
+    - footnotes
+    - tables
+    - markdown_checklist.extension
