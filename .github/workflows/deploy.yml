@@ -1,0 +1,38 @@
+name: Build MkDocs on gh-pages Branch
+
+on:
+  push:
+    branches: [gh-pages]  # 仅在推送到gh-pages分支时触发
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # 允许工作流推送代码到分支
+
+    steps:
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages  # 明确指定检出gh-pages分支
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install MkDocs and dependencies
+        run: |
+          pip install mkdocs mkdocs-material  # 安装核心依赖
+          # 可选：添加其他插件（如mkdocs-minify-plugin等）
+
+      - name: Build MkDocs site
+        run: mkdocs build --site-dir ./build-output  # 构建到./build-output目录
+
+      - name: Commit and Push Built Files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ./build-output/*  # 添加构建结果
+          git commit -m "Automated build: $(date +'%Y-%m-%d %H:%M:%S')" || echo "No changes to commit"
+          git push origin gh-pages
