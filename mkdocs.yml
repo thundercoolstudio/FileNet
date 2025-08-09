@@ -5,9 +5,10 @@ nav:
     
 theme: 
     name: readthedocs
-    user_color_mode_toggle:True
+    user_color_mode_toggle: True
     hljs_languages:
         - python
+        - rust
          
 markdown_extensions:
     - toc:
