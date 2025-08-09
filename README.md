@@ -1,8 +1,11 @@
-
+[![Deploy MkDocs Site](https://github.com/thundercoolstudio/FileNet/actions/workflows/deploy.yml/badge.svg)](https://github.com/thundercoolstudio/FileNet/actions/workflows/deploy.yml)
 **[[ 中 文 (简 体) ]](#简介) | [[ E n g l i s h ]](#简介)**
 
 # 简介
 **`FileNet`（中文名`文件网络`）是一个基于`Python Flask`&`HTML/CSS/JS`实现的个人网盘部署程序，如果您想快速部署一个网盘，或者有部署小型网盘的需求，可以尝试使用此程序；不建议您使用本程序构建较大的网盘，如果您追求极致的性能，您可以移步其他项目，也可以等待我们的`C/C++`版本实现[等待个90年就差不多了吧(BUSHI)]**
+
+# 查看我们的文档
+**[戳这里访问文档](https://thundercoolstudio.github.io/FileNet/)**
 
 # 部署要求
 ***对于需要部署本程序的机器，要求:***
@@ -118,7 +121,7 @@
             "<uuid>":"<uuid_value>",
             "<password>":"<hash_value>",
             "<signin_value>":"<md5_value>",
-            "<type>":<int_number>"
+            "<type>":2
         },
     },
     
