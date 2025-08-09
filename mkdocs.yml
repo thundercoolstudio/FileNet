@@ -1,0 +1,4 @@
+site_name: FileNet Using Docs
+nav:
+    - Home: index.md
+theme: readthedocs
