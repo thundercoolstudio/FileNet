@@ -1,4 +1,5 @@
 site_name: FileNet Using Docs
 nav:
-    - Home: index.md
+    - 首页: index.md
+    - 开发: development.md
 theme: readthedocs
