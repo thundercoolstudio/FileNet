@@ -9,8 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      contents: write  # 允许工作流推送代码到分支
+      contents: read,write  # 允许工作流推送代码到分支
 
     steps:
       - name: Checkout gh-pages branch
