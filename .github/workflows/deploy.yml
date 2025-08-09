@@ -1,51 +1,42 @@
-
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
-
-name: Python application
-
+name: Deploy MkDocs Site
 on:
   push:
-    branches: [ "gh-pages" ]
+    branches: [ "main" ]  # 建议在源分支触发
   pull_request:
-    branches: [ "gh-pages" ]
-
+    branches: [ "main" ]
 permissions:
-  contents: write
-
+  contents: write  # 允许写入gh-pages分支[3,5](@ref)
 jobs:
-  build:
-
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python 3.12.4
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.12.4"
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install flake8 pytest mkdocs mkdocs-material
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        
-    - name: Build MkDocs site
-        run: mkdocs build --site-dir ./build-output  # 构建到./build-output目录
+      # 1. 检出代码
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          ref: gh-pages  # 明确指定检出gh-pages分支
-          
-    - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-        
-    - name: Commit and Push Built Files
+          fetch-depth: 0  # 获取完整提交历史[5](@ref)
+      
+      # 2. 设置Python
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12.x"  # 使用x保持兼容性[5](@ref)
+      
+      # 3. 安装依赖
+      - name: Install dependencies
         run: |
-          git config user.name "BuelieR"
-          git config user.email "yydsfps@163.com"
-          git add ./build-output/*  # 添加构建结果
-          git commit -m "Automated build: $(date +'%Y-%m-%d %H:%M:%S')" || echo "No changes to commit"
-          git push origin gh-pages
+          python -m pip install --upgrade pip
+          pip install mkdocs mkdocs-material
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      
+      # 4. 代码检查
+      - name: Lint with flake8
+        run: |
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      
+      # 5. 构建并部署
+      - name: Deploy to GitHub Pages
+        run: mkdocs gh-deploy --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # 自动身份验证[3,5](@ref)
